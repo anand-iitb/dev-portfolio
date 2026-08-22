@@ -18,38 +18,32 @@ export function Hero() {
         <ScrollReveal>
           <p className="label mb-6">Hello, I&apos;m</p>
         </ScrollReveal>
+
         <ScrollReveal delay={0.08}>
           <h1 className="display text-[clamp(3.4rem,12vw,9.5rem)]">
             <MetalName className="block">{person.firstName}</MetalName>
             <MetalName className="block">{person.lastName}</MetalName>
           </h1>
         </ScrollReveal>
+
         <ScrollReveal delay={0.16}>
           <p className="mt-8 max-w-xl text-lg text-text md:text-xl">{person.role}</p>
         </ScrollReveal>
+
         <ScrollReveal delay={0.22}>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
             {person.statement}
           </p>
         </ScrollReveal>
+
         <ScrollReveal delay={0.28}>
-          <div className="mt-10 flex flex-wrap items-center gap-8">
+          <div className="mt-10 flex items-center">
             <MagneticButton
               href="#work"
-              className="label border border-border bg-text px-6 py-3 text-bg"
+              className="label border border-border bg-text px-7 py-4 text-bg font-medium"
             >
-              View my work
-              <ArrowUpRight size={14} />
-            </MagneticButton>
-            <MagneticButton href="#contact" className="label link-line text-text">
-              Contact me
-            </MagneticButton>
-            <MagneticButton
-              href={person.resume}
-              className="label link-line text-text"
-              ariaLabel="Download resume"
-            >
-              Resume
+              Explore Selected Work
+              <ArrowUpRight size={15} />
             </MagneticButton>
           </div>
         </ScrollReveal>

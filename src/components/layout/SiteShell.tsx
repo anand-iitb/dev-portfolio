@@ -5,8 +5,6 @@ import { AnimatePresence, LayoutGroup } from "motion/react";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { CustomCursor } from "@/components/ui/CustomCursor";
-import { CursorProvider } from "@/components/ui/cursor-context";
 import { ThemeProvider } from "@/components/ui/theme-context";
 import { FilmProgress } from "@/components/ui/FilmProgress";
 import { Preloader } from "@/components/animations/Preloader";
@@ -30,10 +28,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider>
-    <CursorProvider>
       <LayoutGroup>
         <SmoothScroll>
-          <CustomCursor />
           <FilmProgress />
           <div className="grain" aria-hidden />
           <AnimatePresence>
@@ -48,7 +44,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
         </SmoothScroll>
       </LayoutGroup>
-    </CursorProvider>
     </ThemeProvider>
   );
 }

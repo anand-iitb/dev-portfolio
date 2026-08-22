@@ -1,72 +1,85 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Heart, Mail } from "lucide-react";
+import { siGithub, siInstagram } from "simple-icons";
 import { portfolio } from "@/data/portfolio";
-import { StatusDot } from "@/components/ui/StatusDot";
 import { VisitCounter } from "@/components/ui/VisitCounter";
-import { IndiaTime } from "@/components/ui/IndiaTime";
-import { MetalName } from "@/components/ui/MetalName";
-import { useCursor } from "@/components/ui/cursor-context";
+
+const LINKEDIN_PATH =
+  "M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.81a1.45 1.45 0 0 0-1.45 1.45 1.45 1.45 0 0 0 1.45 1.45 1.45 1.45 0 0 0 1.45-1.45 1.45 1.45 0 0 0-1.45-1.45z";
 
 export function Footer() {
   const { person, social } = portfolio;
-  const year = new Date().getFullYear();
-  const { setLabel } = useCursor();
 
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-8 gap-y-10 px-[var(--page-pad)] py-12 md:grid-cols-12 md:gap-x-6">
-        <div className="md:col-span-3">
-          <p className="label mb-3">Name</p>
-          <a href="#top" className="label text-text">
-            <MetalName>{person.name}</MetalName>
-          </a>
-        </div>
-        <div className="md:col-span-3">
-          <p className="label mb-3">Location</p>
-          <p className="label text-text">{person.location}</p>
-          <div className="mt-2">
-            <IndiaTime />
+    <footer className="border-t border-border py-14">
+      <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center gap-6 px-[var(--page-pad)] text-center">
+        {/* Symmetrical Row: 2 icons on left, Visitors count in center, 2 icons on right */}
+        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8">
+          {/* Left: Email & LinkedIn */}
+          <div className="flex items-center gap-3">
+            <a
+              href={`mailto:${person.email}`}
+              aria-label="Email"
+              title="Email"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+            >
+              <Mail size={16} />
+            </a>
+            <a
+              href={social.linkedin.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              title="LinkedIn"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+                <path d={LINKEDIN_PATH} />
+              </svg>
+            </a>
           </div>
-        </div>
-        <div className="md:col-span-2">
-          <p className="label mb-3">Index</p>
-          <p className="label text-text">{year}</p>
-          <div className="mt-2">
+
+          {/* Center: Visitors Count */}
+          <div className="px-2">
             <VisitCounter />
           </div>
-        </div>
-        <div className="md:col-span-4">
-          <p className="label mb-3">Connect</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <a className="label link-line text-text" href={person.resume}>
-              Resume
+
+          {/* Right: GitHub & Instagram */}
+          <div className="flex items-center gap-3">
+            <a
+              href={social.github.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              title="GitHub"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+                <path d={siGithub.path} />
+              </svg>
             </a>
-            <a className="label link-line text-text" href={social.github.href}>
-              GitHub
-            </a>
-            <a className="label link-line text-text" href={social.linkedin.href}>
-              LinkedIn
-            </a>
-            <a className="label link-line text-text" href={`mailto:${person.email}`}>
-              Email
+            <a
+              href={social.instagram.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              title="Instagram"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+                <path d={siInstagram.path} />
+              </svg>
             </a>
           </div>
         </div>
-        <div
-          className="col-span-2 flex items-center md:col-span-8"
-          onMouseEnter={() => setLabel("heart")}
-          onMouseLeave={() => setLabel(null)}
-        >
-          <p className="label inline-flex items-center gap-2">
-            Made with
-            <Heart size={12} className="fill-accent text-accent" />
-            by {person.name}
-          </p>
-        </div>
-        <div className="col-span-2 flex items-center md:col-span-4 md:justify-end">
-          <StatusDot label="Open to opportunities" />
-        </div>
+
+        {/* Bottom: Made with Love */}
+        <p className="label inline-flex items-center gap-2 text-text/80 pt-2">
+          Made with
+          <Heart size={12} className="fill-accent text-accent" />
+          by Anand
+        </p>
       </div>
     </footer>
   );

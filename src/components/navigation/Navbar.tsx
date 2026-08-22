@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { portfolio } from "@/data/portfolio";
-import { StatusDot } from "@/components/ui/StatusDot";
 import { MobileMenu } from "@/components/navigation/MobileMenu";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { MetalName } from "@/components/ui/MetalName";
@@ -45,10 +44,6 @@ export function Navbar() {
 
           <div className="flex items-center gap-5">
             <IndiaTime className="hidden md:block" />
-            <StatusDot
-              className="hidden xl:inline-flex"
-              label={portfolio.person.availability}
-            />
             <a
               href={portfolio.person.resume}
               className="label link-line hidden text-text sm:inline-flex"

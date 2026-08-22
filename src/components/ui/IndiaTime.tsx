@@ -24,7 +24,7 @@ export function IndiaTime({ className = "" }: { className?: string }) {
 
   return (
     <p className={`label tabular-nums text-text ${className}`}>
-      India {time || "--:--:--"}
+      {time || "--:--:--"} IST
     </p>
   );
 }

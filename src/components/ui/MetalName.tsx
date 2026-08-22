@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
 export function MetalName({
   children,
   className = "",
@@ -9,34 +7,16 @@ export function MetalName({
   children: string;
   className?: string;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const target = useRef(72);
-  const current = useRef(72);
-  const raf = useRef(0);
-
-  useEffect(() => {
-    const tick = () => {
-      current.current += (target.current - current.current) * 0.12;
-      ref.current?.style.setProperty("--shine", `${current.current}%`);
-      raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, []);
-
   return (
-    <span
-      ref={ref}
-      className={`metal-name ${className}`}
-      onMouseMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        target.current = ((event.clientX - rect.left) / rect.width) * 100;
-      }}
-      onMouseLeave={() => {
-        target.current = 72;
-      }}
-    >
-      {children}
+    <span className={`inline-block select-none ${className}`} style={{ perspective: "1000px" }}>
+      {children.split("").map((char, i) => (
+        <span
+          key={i}
+          className="inline-block transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:[transform:rotateY(360deg)_scale(1.04)] hover:text-accent cursor-pointer select-none origin-center"
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
     </span>
   );
 }

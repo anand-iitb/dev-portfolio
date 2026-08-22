@@ -6,7 +6,7 @@ export function Skills() {
   return (
     <section className="mx-auto max-w-[1440px] px-[var(--page-pad)] py-24 md:py-32">
       <ScrollReveal>
-        <p className="label mb-14">02 — Capabilities</p>
+        <p className="label mb-14">02 — Technical Skills</p>
       </ScrollReveal>
       <div className="grid gap-12 border-t border-border pt-10 sm:grid-cols-2 lg:grid-cols-4">
         {portfolio.skills.map((group, i) => (

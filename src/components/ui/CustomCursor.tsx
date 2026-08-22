@@ -50,12 +50,22 @@ export function CustomCursor() {
             ? "h-8 w-8 text-accent"
             : expanded
               ? "h-16 w-16 rounded-full bg-accent text-[10px] font-medium tracking-[0.14em] text-bg uppercase"
-              : "h-2.5 w-2.5 rounded-full bg-text"
+              : "h-6 w-6"
         }`}
       >
         {heart ? <Heart size={16} className="fill-accent" /> : null}
         {expanded ? (
           <span className="px-2 text-center whitespace-pre-line">{label}</span>
+        ) : null}
+        {!heart && !expanded ? (
+          <>
+            {/* Horizontal crosshair line */}
+            <span className="absolute left-1/2 top-1/2 h-[1px] w-full -translate-x-1/2 -translate-y-1/2 bg-text/70" />
+            {/* Vertical crosshair line */}
+            <span className="absolute left-1/2 top-1/2 h-full w-[1px] -translate-x-1/2 -translate-y-1/2 bg-text/70" />
+            {/* Center dot */}
+            <span className="absolute left-1/2 top-1/2 h-[3px] w-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" />
+          </>
         ) : null}
       </div>
     </div>

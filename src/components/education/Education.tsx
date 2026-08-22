@@ -36,26 +36,6 @@ export function Education() {
           </ScrollReveal>
         ))}
       </div>
-      <ScrollReveal>
-        <p className="label mt-20 mb-10">Recognition</p>
-      </ScrollReveal>
-      <ol className="border-t border-border">
-        {portfolio.achievements.map((item, i) => (
-          <li key={item.title}>
-            <ScrollReveal delay={i * 0.03}>
-              <article className="group grid gap-3 border-b border-border py-8 md:grid-cols-[9.5rem_minmax(0,1.2fr)_minmax(0,1.6fr)] md:items-baseline md:gap-10">
-                <p className="label text-accent">{item.year}</p>
-                <h3 className="display text-[clamp(1.35rem,2.4vw,2rem)] text-text">
-                  {item.title}
-                </h3>
-                <p className="max-w-xl text-sm leading-relaxed text-muted md:text-base">
-                  {item.detail}
-                </p>
-              </article>
-            </ScrollReveal>
-          </li>
-        ))}
-      </ol>
     </section>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { portfolio } from "@/data/portfolio";
@@ -12,7 +12,6 @@ export function About() {
   const words = about.editorial.split(" ");
   const ref = useRef<HTMLParagraphElement>(null);
   const reduced = usePrefersReducedMotion();
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const root = ref.current;
@@ -62,27 +61,19 @@ export function About() {
           </span>
         ))}
       </p>
-      <div className="mt-16 grid gap-10 md:grid-cols-[1fr_1.1fr] md:gap-20">
-        <p className="text-sm text-muted">Biography</p>
+      <div className="mt-20 grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-20">
         <div>
-          <p className="max-w-xl text-lg leading-relaxed text-text/90">
+          <p className="label text-accent">Background & Philosophy</p>
+        </div>
+        <div className="space-y-6">
+          <p className="text-lg leading-relaxed text-text/95 md:text-xl">
             {about.bio}
           </p>
-          <button
-            type="button"
-            className="label link-line mt-8 text-text"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? "Show less" : "More about me"}
-          </button>
-          {open ? (
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted">
-              {about.more.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          ) : null}
+          <div className="space-y-4 pt-2 text-base leading-relaxed text-muted">
+            {about.more.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
         </div>
       </div>
     </section>

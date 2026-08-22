@@ -30,6 +30,10 @@ export const portfolio = {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/anand-iitb/",
     },
+    instagram: {
+      label: "Instagram",
+      href: "https://instagram.com/",
+    },
   },
   nav: [
     { label: "About", href: "#about" },
@@ -39,11 +43,12 @@ export const portfolio = {
   ],
   about: {
     editorial:
-      "I BUILD BACKEND SYSTEMS THAT TURN COMPLEX PAYMENT FLOWS INTO QUIET, RELIABLE PRODUCTS.",
-    bio: "Software Development Engineer at Navi, focused on UPI backend — multi-provider integrations, transaction reliability, and systems that hold up under real market load. Previously interned at Nutanix. IIT Bombay, Computer Science.",
+      "I BUILD DISTRIBUTED SYSTEMS AND RESILIENT PAYMENT INFRASTRUCTURE AT HIGH SCALE.",
+    bio: "Software Development Engineer at Navi Technologies working on mission-critical UPI backend systems — multi-PSP routing, real-time transaction processing, and automated fault recovery. Graduated with a B.Tech in Computer Science and Engineering from IIT Bombay ('24), with prior engineering experience at Nutanix.",
     more: [
-      "I care about failure isolation, clean service boundaries, and making operational complexity disappear from the product experience.",
-      "Most of my recent work lives in payments infrastructure: PSP integrations, event-driven recovery, and scaling transaction paths without adding noise.",
+      "I specialize in architecting high-throughput, low-latency backends with clean service boundaries, fault isolation, and event-driven data consistency.",
+      "At Navi, my core work spans payments infrastructure: integrating 30+ PSP APIs, eliminating inter-service bottlenecks with HTTP/2 and connection pool tuning, and building automated reconciliation with Kafka and PostgreSQL.",
+      "Beyond payments, I have strong foundations in systems programming (xv6 OS internals), compiler design (C-to-x86), and competitive algorithms (Codeforces Specialist, Kickstart Rank 1249).",
     ],
   },
   skills: [
@@ -52,8 +57,8 @@ export const portfolio = {
       label: "Languages",
       items: [
         { name: "Java", href: "https://openjdk.org", icon: "openjdk" },
-        { name: "Kotlin", href: "https://kotlinlang.org", icon: "kotlin" },
         { name: "Go", href: "https://go.dev", icon: "go" },
+        { name: "Kotlin", href: "https://kotlinlang.org", icon: "kotlin" },
         { name: "Python", href: "https://www.python.org", icon: "python" },
         { name: "C++", href: "https://isocpp.org", icon: "cplusplus" },
         { name: "C", href: "https://en.cppreference.com/w/c", icon: "c" },
@@ -68,11 +73,11 @@ export const portfolio = {
       items: [
         { name: "Spring Boot", href: "https://spring.io/projects/spring-boot", icon: "springboot" },
         { name: "Kafka", href: "https://kafka.apache.org", icon: "apachekafka" },
-        { name: "REST", href: "https://restfulapi.net", icon: "rest" },
         { name: "gRPC", href: "https://grpc.io", icon: "grpc" },
         { name: "Protobuf", href: "https://protobuf.dev", icon: "protobuf" },
-        { name: "Maven", href: "https://maven.apache.org", icon: "apachemaven" },
+        { name: "REST", href: "https://restfulapi.net", icon: "rest" },
         { name: "Node.js", href: "https://nodejs.org", icon: "nodedotjs" },
+        { name: "Maven", href: "https://maven.apache.org", icon: "apachemaven" },
       ],
     },
     {
@@ -83,21 +88,21 @@ export const portfolio = {
         { name: "Redis", href: "https://redis.io", icon: "redis" },
         { name: "DynamoDB", href: "https://aws.amazon.com/dynamodb/", icon: "dynamodb" },
         { name: "Elasticsearch", href: "https://www.elastic.co/elasticsearch", icon: "elasticsearch" },
-        { name: "Firestore", href: "https://firebase.google.com/docs/firestore", icon: "firebase" },
-        { name: "S3", href: "https://aws.amazon.com/s3/", icon: "s3" },
         { name: "Snowflake", href: "https://www.snowflake.com", icon: "snowflake" },
+        { name: "S3", href: "https://aws.amazon.com/s3/", icon: "s3" },
+        { name: "Firestore", href: "https://firebase.google.com/docs/firestore", icon: "firebase" },
       ],
     },
     {
       id: "infra",
       label: "Infrastructure",
       items: [
-        { name: "Docker", href: "https://www.docker.com", icon: "docker" },
         { name: "Kubernetes", href: "https://kubernetes.io", icon: "kubernetes" },
+        { name: "Docker", href: "https://www.docker.com", icon: "docker" },
         { name: "AWS", href: "https://aws.amazon.com", icon: "aws" },
+        { name: "Argo CD", href: "https://argo-cd.readthedocs.io", icon: "argo" },
         { name: "Prometheus", href: "https://prometheus.io", icon: "prometheus" },
         { name: "Grafana", href: "https://grafana.com", icon: "grafana" },
-        { name: "Argo CD", href: "https://argo-cd.readthedocs.io", icon: "argo" },
         { name: "Git", href: "https://git-scm.com", icon: "git" },
         { name: "PyTorch", href: "https://pytorch.org", icon: "pytorch" },
       ],
@@ -223,7 +228,6 @@ export const portfolio = {
       slug: "upi-multibank",
       index: "01",
       title: "UPI Multibank",
-      year: "2024",
       category: "Payments",
       description:
         "Integrated multiple PSPs into UPI — 30+ APIs, centralized auth and retries, configurable routing, and circuit breakers so one downstream failure does not take the rail down.",
@@ -233,7 +237,6 @@ export const portfolio = {
       slug: "nadaga",
       index: "02",
       title: "Project Nadaga",
-      year: "2024",
       category: "Scale",
       description:
         "Transaction-path work for UPI market-share load: fewer inter-service hops, HTTP/2, and connection-pool jitter so pods stop expiring in lockstep.",
@@ -243,7 +246,6 @@ export const portfolio = {
       slug: "gratification",
       index: "03",
       title: "Gratification Service",
-      year: "2024",
       category: "Reliability",
       description:
         "Event-driven recovery for pending UPI transactions, with quota-aware NPCI polling so reconciliation does not have to be a person.",
