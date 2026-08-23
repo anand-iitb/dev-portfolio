@@ -38,9 +38,12 @@ export const portfolio = {
   nav: [
     { label: "About", href: "#about" },
     { label: "Experience", href: "#experience" },
-    { label: "Work", href: "#work" },
+    { label: "Projects", href: "#work" },
+    { label: "Achievements", href: "#recognition" },
+    { label: "Resume", href: "/resume.pdf" },
     { label: "Contact", href: "#contact" },
   ],
+
   about: {
     editorial:
       "I BUILD DISTRIBUTED SYSTEMS AND RESILIENT PAYMENT INFRASTRUCTURE AT HIGH SCALE.",
@@ -111,7 +114,7 @@ export const portfolio = {
   experience: [
     {
       id: "navi",
-      year: "2024 — Present",
+      year: "July 2024 — Present",
       start: "Jul 2024",
       role: "Software Development Engineer",
       company: "Navi Technologies",
@@ -121,8 +124,8 @@ export const portfolio = {
     },
     {
       id: "nutanix",
-      year: "2023",
-      start: "May 2023",
+      year: "July 2023 — August 2023",
+      start: "Jul 2023",
       role: "Software Engineering Intern",
       company: "Nutanix",
       location: "Pune",
@@ -130,6 +133,7 @@ export const portfolio = {
         "Configuration-driven Snowflake table lifecycle automation — identify, truncate, and ship with less manual ops. Built in Go, stored config in DynamoDB, deployed on Kubernetes with Argo CD.",
     },
   ],
+
   education: [
     {
       id: "iitb",

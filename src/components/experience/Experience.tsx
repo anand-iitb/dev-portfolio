@@ -28,25 +28,13 @@ export function Experience() {
             ease: "none",
             scrollTrigger: {
               trigger: section,
-              start: "top 70%",
-              end: "bottom 70%",
+              start: "top 75%",
+              end: "bottom 75%",
               scrub: 0.4,
             },
           },
         );
       }
-
-      section.querySelectorAll<HTMLElement>("[data-exp]").forEach((item) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top 62%",
-          end: "bottom 48%",
-          onEnter: () => item.setAttribute("data-active", "true"),
-          onEnterBack: () => item.setAttribute("data-active", "true"),
-          onLeave: () => item.setAttribute("data-active", "false"),
-          onLeaveBack: () => item.setAttribute("data-active", "false"),
-        });
-      });
     }, section);
 
     return () => ctx.revert();
@@ -56,43 +44,58 @@ export function Experience() {
     <section
       id="experience"
       ref={root}
-      className="mx-auto max-w-[1440px] px-[var(--page-pad)] py-24 md:py-32"
+      className="mx-auto max-w-[1440px] px-[var(--page-pad)] py-24 md:py-36"
     >
       <ScrollReveal>
-        <p className="label mb-14">03 — Experience</p>
+        <p className="label mb-14">Experience</p>
       </ScrollReveal>
-      <div className="relative">
-        <div className="absolute top-0 bottom-0 left-0 w-px bg-border md:left-[8.5rem]" />
+
+      <div className="relative pl-6 md:pl-0">
+        {/* Timeline Line */}
+        <div className="absolute top-0 bottom-0 left-0 w-px bg-border md:left-[11rem]" />
         <div
           ref={line}
-          className="absolute top-0 left-0 h-full w-px origin-top bg-accent md:left-[8.5rem]"
+          className="absolute top-0 left-0 h-full w-px origin-top bg-accent md:left-[11rem]"
           style={{ transform: reduced ? "scaleY(1)" : "scaleY(0)" }}
         />
-        <ol className="space-y-16 md:space-y-24">
+
+        <div className="space-y-14 md:space-y-20">
           {portfolio.experience.map((job) => (
-            <li
-              key={job.id}
-              data-exp
-              data-active={reduced ? "true" : "false"}
-              className="grid gap-4 pl-8 transition-opacity duration-500 md:grid-cols-[8.5rem_1fr] md:gap-16 md:pl-16 data-[active=false]:opacity-35 data-[active=true]:opacity-100"
-            >
-              <p className="label pt-1 text-accent">{job.year}</p>
-              <div>
-                <ScrollReveal>
-                  <h2 className="display text-3xl md:text-5xl">{job.role}</h2>
-                </ScrollReveal>
-                <p className="mt-3 flex items-center gap-2 text-muted">
-                  <TechIcon slug={job.id} title={job.company} className="h-4 w-4 shrink-0 text-accent" />
-                  <span>{job.company} · {job.location}</span>
-                </p>
-                <p className="mt-5 max-w-2xl leading-relaxed text-text/85">
-                  {job.description}
-                </p>
-              </div>
-            </li>
+            <ScrollReveal key={job.id}>
+              <article className="relative grid gap-4 md:grid-cols-[11rem_1fr] md:gap-14 items-start">
+                {/* Timeline Dot on line */}
+                <div className="hidden md:block absolute left-[11rem] top-2 -translate-x-1/2 h-2.5 w-2.5 rounded-full border border-accent bg-bg" />
+
+                {/* Date on Left (Desktop) / Top (Mobile) */}
+                <div className="md:text-right md:pr-10">
+                  <span className="label text-accent text-[0.7rem] tracking-wider block">
+                    {job.year}
+                  </span>
+                </div>
+
+                {/* Details on Right */}
+                <div className="space-y-3">
+                  <h3 className="display text-2xl md:text-4xl text-text">
+                    {job.role}
+                  </h3>
+
+                  <p className="flex items-center gap-2 text-muted text-sm md:text-base">
+                    <TechIcon slug={job.id} title={job.company} className="h-4 w-4 shrink-0 text-accent" />
+                    <span className="font-medium text-text/90">{job.company}</span>
+                    <span className="text-muted/60">·</span>
+                    <span>{job.location}</span>
+                  </p>
+
+                  <p className="max-w-3xl leading-relaxed text-text/85 text-sm md:text-base pt-2">
+                    {job.description}
+                  </p>
+                </div>
+              </article>
+            </ScrollReveal>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   );
 }
+

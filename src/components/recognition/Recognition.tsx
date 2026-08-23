@@ -1,193 +1,261 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Award } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { portfolio } from "@/data/portfolio";
-import { usePrefersReducedMotion } from "@/lib/use-media";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 export function Recognition() {
-  const pin = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const reduced = usePrefersReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const triggerRef = useRef<ScrollTrigger | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const totalAchievements = portfolio.achievements.length;
+  const AUTO_DURATION = 4000; // 4 seconds per achievement
 
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % totalAchievements);
+    setProgress(0);
+  }, [totalAchievements]);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + totalAchievements) % totalAchievements);
+    setProgress(0);
+  }, [totalAchievements]);
+
+  const goToIndex = (idx: number) => {
+    setCurrentIndex(idx);
+    setProgress(0);
+  };
+
+  // Smooth live progress timer for active pill
   useEffect(() => {
-    const pinEl = pin.current;
-    const trackEl = track.current;
-    if (!pinEl || !trackEl) return;
+    if (isPaused) return;
 
-    const cards = Array.from(trackEl.querySelectorAll<HTMLElement>("[data-cube-card]"));
-    if (cards.length === 0) return;
+    const intervalTime = 30; // 33fps silky smooth filling
+    const step = (intervalTime / AUTO_DURATION) * 100;
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    const updateCubeTransforms = (progress: number) => {
-      const numCards = cards.length;
-      if (numCards === 0) return;
-
-      const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
-      const currentFloatIdx = progress * (numCards - 1);
-      const activeIdx = Math.min(
-        numCards - 1,
-        Math.max(0, Math.round(currentFloatIdx))
-      );
-      setCurrentIndex(activeIdx);
-
-      cards.forEach((card, idx) => {
-        const diff = idx - currentFloatIdx;
-        const absDiff = Math.abs(diff);
-        const isActive = idx === activeIdx;
-
-        card.dataset.active = isActive ? "true" : "false";
-
-        if (reduced) {
-          card.style.transform = "none";
-          card.style.opacity = isActive ? "1" : "0.5";
-          return;
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          handleNext();
+          return 0;
         }
-
-        // 3D Cube Rotation Effect (Zero Blur everywhere)
-        if (isSmallScreen) {
-          const scale = isActive ? 1.02 : 0.94;
-          const opacity = isActive ? 1 : 0.45;
-          const rotateY = Math.max(-35, Math.min(35, -diff * 22));
-          card.style.transform = `perspective(1000px) rotateY(${rotateY.toFixed(1)}deg) scale(${scale})`;
-          card.style.filter = "none";
-          card.style.opacity = String(opacity);
-          return;
-        }
-
-        const rotateY = Math.max(-55, Math.min(55, -diff * 32));
-        const translateZ = Math.max(-120, 50 - absDiff * 85);
-        const scale = Math.max(0.86, 1.04 - absDiff * 0.08);
-        const opacity = Math.max(0.4, 1 - absDiff * 0.35);
-
-        card.style.transform = `perspective(1400px) translateZ(${translateZ.toFixed(1)}px) rotateY(${rotateY.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
-        card.style.filter = "none";
-        card.style.opacity = opacity.toFixed(2);
+        return prev + step;
       });
-    };
+    }, intervalTime);
 
-    const ctx = gsap.context(() => {
-      const getDistance = () =>
-        Math.max(0, trackEl.scrollWidth - window.innerWidth + 120);
+    return () => clearInterval(timer);
+  }, [isPaused, handleNext]);
 
-      const tween = gsap.to(trackEl, {
-        x: () => -getDistance(),
-        ease: "none",
-        scrollTrigger: {
-          id: "recognition-scroll",
-          trigger: pinEl,
-          start: "top top",
-          end: () => `+=${Math.max(window.innerHeight * 2.2, getDistance() * 1.05)}`,
-          pin: true,
-          anticipatePin: 1,
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            updateCubeTransforms(self.progress);
-          },
-        },
-      });
+  // Touch Swipe Handlers for Mobile (horizontal swipe)
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+    setIsPaused(true);
+  };
 
-      triggerRef.current = tween.scrollTrigger || null;
-      updateCubeTransforms(0);
-    }, pinEl);
-
-
-    return () => ctx.revert();
-  }, [reduced]);
-
-  const scrollToRecognition = (targetIndex: number) => {
-    const nextIdx = Math.max(0, Math.min(portfolio.achievements.length - 1, targetIndex));
-    const st = triggerRef.current;
-    if (st) {
-      const targetScroll = st.start + (nextIdx / (portfolio.achievements.length - 1)) * (st.end - st.start);
-      window.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
-      });
+  const onTouchEnd = (e: React.TouchEvent) => {
+    setIsPaused(false);
+    if (touchStartX.current === null) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - endX;
+    if (diff > 45) {
+      handleNext();
+    } else if (diff < -45) {
+      handlePrev();
     }
+    touchStartX.current = null;
+  };
+
+  // 3D Cube Rotation with Cinematic Depth Blur & 3-Tier Shading
+  const getCardStyle = (index: number) => {
+    let offset = (index - currentIndex + totalAchievements) % totalAchievements;
+    if (offset > totalAchievements / 2) {
+      offset -= totalAchievements;
+    }
+
+    const absOffset = Math.abs(offset);
+    const isCenter = offset === 0;
+    const isVisible = absOffset <= 2;
+
+    // 3D Cube Spatial Positioning
+    const translateX = offset * 66; // percentage offset
+    const translateZ = isCenter ? 60 : Math.max(-160, 20 - absOffset * 75);
+    const rotateY = isCenter ? 0 : Math.max(-38, Math.min(38, -offset * 25));
+    const scale = isCenter ? 1.05 : Math.max(0.78, 1 - absOffset * 0.08);
+    const blurPx = isCenter ? 0 : Math.min(4.5, Math.max(0, (absOffset - 0.3) * 2.2));
+    
+    // Balanced 3-tier opacity for crisp visibility in both dark and light modes
+    const opacity = isCenter ? 1 : absOffset === 1 ? 0.82 : 0.58;
+    const zIndex = 30 - absOffset * 6;
+
+    return {
+      transform: `translate(-50%, -50%) translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+      filter: blurPx > 0.4 ? `blur(${blurPx.toFixed(1)}px)` : "none",
+      opacity: isVisible ? opacity : 0,
+      zIndex,
+      pointerEvents: isVisible ? ("auto" as const) : ("none" as const),
+      visibility: isVisible ? ("visible" as const) : ("hidden" as const),
+      transformOrigin: "center center",
+      transformStyle: "preserve-3d" as const,
+      transition: "transform 0.75s cubic-bezier(0.2, 0.9, 0.3, 1), filter 0.75s ease, opacity 0.75s ease, border-color 0.4s ease, box-shadow 0.4s ease",
+    };
   };
 
   return (
-    <section id="recognition" className="py-20 md:py-32">
-      <div className="mx-auto mb-8 md:mb-12 flex max-w-[1440px] items-center justify-between px-[var(--page-pad)]">
-        <div>
-          <p className="label">06 — Recognition & Honors</p>
-        </div>
-
-        {/* Manual Navigation Controls */}
-        <div className="flex items-center gap-4">
-          <p className="label hidden text-muted sm:inline-block">
-            {String(currentIndex + 1).padStart(2, "0")} / {String(portfolio.achievements.length).padStart(2, "0")}
-          </p>
+    <section id="recognition" className="py-24 md:py-36 overflow-hidden">
+      <div className="mx-auto mb-10 max-w-[1440px] px-[var(--page-pad)] w-full">
+        <ScrollReveal>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => scrollToRecognition(currentIndex - 1)}
-              disabled={currentIndex === 0}
-              aria-label="Previous achievement"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-colors hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text cursor-pointer"
-            >
-              <ArrowLeft size={14} />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToRecognition(currentIndex + 1)}
-              disabled={currentIndex === portfolio.achievements.length - 1}
-              aria-label="Next achievement"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-colors hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text cursor-pointer"
-            >
-              <ArrowRight size={14} />
-            </button>
+            <Award size={14} className="text-accent" />
+            <p className="label text-accent">Honors & Milestones</p>
           </div>
-        </div>
+          <h2 className="display mt-3 text-3xl md:text-5xl text-text">
+            Recognition
+          </h2>
+        </ScrollReveal>
       </div>
 
+      {/* 3D Cube Carousel Deck */}
       <div
-        ref={pin}
-        className="cube-stage flex min-h-[85vh] md:min-h-svh items-center overflow-hidden"
+        className="w-full relative px-[var(--page-pad)] max-w-[1440px] mx-auto select-none"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
         <div
-          ref={track}
-          className="flex w-max items-center gap-6 md:gap-10 px-[var(--page-pad)] py-12 will-change-transform"
+          className="relative flex items-center justify-center min-h-[22rem] md:min-h-[26rem] w-full py-6"
+          style={{ perspective: "1300px", transformStyle: "preserve-3d" }}
         >
-          {portfolio.achievements.map((item, idx) => (
-            <article
-              key={item.title}
-              data-cube-card
-              data-active={idx === 0 ? "true" : "false"}
-              onClick={() => scrollToRecognition(idx)}
-              className="cube-card flex w-[min(85vw,22rem)] md:w-[28rem] shrink-0 cursor-pointer flex-col justify-between rounded-sm border border-border bg-bg-elevated p-6 md:h-[22rem] md:p-9 select-none"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <Award size={14} className="text-accent" />
-                    <p className="label text-accent">
-                      {String(idx + 1).padStart(2, "0")}
-                    </p>
+          {portfolio.achievements.map((item, idx) => {
+            const isActive = idx === currentIndex;
+            return (
+              <article
+                key={item.title}
+                onClick={() => goToIndex(idx)}
+                style={getCardStyle(idx)}
+                className={`absolute left-1/2 top-1/2 w-[min(84vw,22rem)] md:w-[28rem] shrink-0 cursor-pointer flex flex-col justify-between rounded-sm border bg-bg-elevated p-7 md:h-[20rem] md:p-9 select-none ${
+                  isActive
+                    ? "border-accent shadow-[0_35px_100px_-15px_rgba(0,0,0,0.8),0_0_0_1.5px_var(--accent),0_0_45px_-5px_var(--accent-dim)] ring-1 ring-accent/60"
+                    : "border-border/80 shadow-[0_20px_50px_rgba(0,0,0,0.45)] hover:border-accent/40"
+                }`}
+              >
+                <div>
+                  {/* Top Bar: Award Icon and Category */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Award size={15} className="text-accent" />
+                      <span className="label text-accent tracking-widest text-[0.68rem] uppercase">
+                        Achievement
+                      </span>
+                    </div>
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent/40" />
                   </div>
-                  <p className="label">{item.year}</p>
+
+                  <h3 className="display mt-6 md:mt-7 text-xl md:text-2xl text-text leading-snug">
+                    {item.title}
+                  </h3>
                 </div>
-                <h3 className="display mt-6 md:mt-8 text-xl tracking-tight text-text md:text-2xl">
-                  {item.title}
-                </h3>
-              </div>
-              <div>
-                <p className="mt-6 text-sm leading-relaxed text-muted md:text-base">
-                  {item.detail}
-                </p>
-              </div>
-            </article>
-          ))}
+
+                <div>
+                  <p className="text-sm md:text-base leading-relaxed text-muted mt-5">
+                    {item.detail}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* Centered Controls: <- . . _ . . -> with Live Completion Progress Bar */}
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+            aria-label="Previous achievement"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all hover:border-accent hover:text-accent hover:scale-105 cursor-pointer"
+          >
+            <ArrowLeft size={16} />
+          </button>
+
+          {/* 5-dot Indicator with Live Completion Progress Pill: <- . . _ . . -> */}
+          <div className="flex items-center gap-2.5 px-3">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToIndex((currentIndex - 2 + totalAchievements) % totalAchievements);
+              }}
+              aria-label="Previous step 2"
+              className="h-1.5 w-1.5 rounded-full bg-border transition-all hover:bg-muted cursor-pointer"
+            />
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToIndex((currentIndex - 1 + totalAchievements) % totalAchievements);
+              }}
+              aria-label="Previous step 1"
+              className="h-1.5 w-1.5 rounded-full bg-border transition-all hover:bg-muted cursor-pointer"
+            />
+
+            {/* Middle Completion Bar Pill */}
+            <div
+              className="relative h-1.5 w-11 overflow-hidden rounded-full bg-border/70 shadow-inner"
+              title="Next achievement countdown"
+            >
+              <div
+                className="h-full bg-accent shadow-[0_0_10px_var(--accent)]"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToIndex((currentIndex + 1) % totalAchievements);
+              }}
+              aria-label="Next step 1"
+              className="h-1.5 w-1.5 rounded-full bg-border transition-all hover:bg-muted cursor-pointer"
+            />
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToIndex((currentIndex + 2) % totalAchievements);
+              }}
+              aria-label="Next step 2"
+              className="h-1.5 w-1.5 rounded-full bg-border transition-all hover:bg-muted cursor-pointer"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+            aria-label="Next achievement"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all hover:border-accent hover:text-accent hover:scale-105 cursor-pointer"
+          >
+            <ArrowRight size={16} />
+          </button>
         </div>
       </div>
     </section>
   );
 }
+
+
+
+
+
+
+
+
 

@@ -12,8 +12,9 @@ export function Contact() {
       className="mx-auto max-w-[1440px] px-[var(--page-pad)] py-28 md:py-40"
     >
       <ScrollReveal>
-        <p className="label mb-10">07 — Contact</p>
+        <p className="label mb-10">Contact</p>
       </ScrollReveal>
+
       <ScrollReveal delay={0.08}>
         <h2 className="display text-[clamp(2.6rem,10vw,8rem)]">
           Let&apos;s build
@@ -25,7 +26,7 @@ export function Contact() {
         <ScrollReveal delay={0.16}>
           <MagneticButton
             href={`mailto:${person.email}`}
-            className="label inline-flex items-center gap-2 border border-text bg-text px-8 py-4 text-bg font-medium transition-transform hover:scale-105"
+            className="btn-slant-sweep label inline-flex items-center gap-3 border border-text bg-text px-9 py-4 text-bg font-medium tracking-widest uppercase transition-all duration-300"
           >
             Get in touch
             <ArrowUpRight size={15} />
@@ -35,3 +36,4 @@ export function Contact() {
     </section>
   );
 }
+

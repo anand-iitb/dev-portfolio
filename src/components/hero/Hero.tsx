@@ -40,7 +40,7 @@ export function Hero() {
           <div className="mt-10 flex items-center">
             <MagneticButton
               href="#work"
-              className="label border border-border bg-text px-7 py-4 text-bg font-medium"
+              className="btn-slant-sweep label border border-text bg-text px-8 py-4 text-bg font-medium tracking-widest uppercase transition-all duration-300"
             >
               Explore Selected Work
               <ArrowUpRight size={15} />
@@ -51,3 +51,4 @@ export function Hero() {
     </section>
   );
 }
+

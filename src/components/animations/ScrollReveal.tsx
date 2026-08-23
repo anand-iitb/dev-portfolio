@@ -26,18 +26,21 @@ export function ScrollReveal({
     const ctx = gsap.context(() => {
       gsap.fromTo(
         el,
-        { x: -72, opacity: 0, clipPath: "inset(0 18% 0 0)" },
+        { x: -64, opacity: 0 },
         {
           x: 0,
           opacity: 1,
-          clipPath: "inset(0 0% 0 0)",
-          duration: 1.15,
+          duration: 0.85,
           delay,
-          ease: "power4.out",
+          ease: "power3.out",
           scrollTrigger: {
             trigger: el,
-            start: "top 90%",
-            toggleActions: "play none none none",
+            start: "top 92%",
+            // onEnter: play (slides in from left)
+            // onLeave: none (NEVER disappears while inside pinned sections!)
+            // onEnterBack: play (re-animates in from left when scrolling back up)
+            // onLeaveBack: reverse (resets when scrolled above)
+            toggleActions: "play none play reverse",
           },
         },
       );
@@ -45,6 +48,8 @@ export function ScrollReveal({
 
     return () => ctx.revert();
   }, [delay, reduced]);
+
+
 
   return (
     <div className={cn("overflow-hidden", className)}>

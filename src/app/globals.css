@@ -218,31 +218,76 @@ html[data-theme="light"] .metal-name {
   filter: drop-shadow(0 1px 0 rgb(255 255 255 / 0.4));
 }
 
-.projects-stage {
-  perspective: 1400px;
-  perspective-origin: center center;
-}
-
-.project-card {
-  transform-style: preserve-3d;
-  will-change: transform, filter, opacity;
+.btn-slant-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius);
   transition:
-    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.project-card[data-active="true"] {
-  border-color: var(--accent);
-  box-shadow:
-    0 32px 80px -15px rgb(0 0 0 / 0.6),
-    0 0 0 1px rgb(196 181 160 / 0.3),
-    0 0 40px -5px var(--accent-dim);
+.btn-slant-sweep::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -25%;
+  width: 150%;
+  background: var(--accent);
+  transform: skewX(-25deg) translateX(-110%);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+  pointer-events: none;
 }
 
-.project-card[data-active="false"] {
-  border-color: var(--border);
-  box-shadow: 0 16px 40px rgb(0 0 0 / 0.25);
+.btn-slant-sweep:hover::before,
+.btn-slant-sweep:focus-visible::before {
+  transform: skewX(-25deg) translateX(0%);
 }
+
+.btn-slant-sweep:hover {
+  color: var(--bg) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 8px 24px -4px var(--accent-dim);
+}
+
+.btn-slant-sweep::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: -50%;
+  width: 25px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent
+  );
+  transform: skewX(-25deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.btn-slant-sweep:hover::after {
+  opacity: 1;
+  animation: slant-beam 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slant-beam {
+  0% {
+    transform: skewX(-25deg) translateX(0);
+  }
+  100% {
+    transform: skewX(-25deg) translateX(700%);
+  }
+}
+
 
 
 

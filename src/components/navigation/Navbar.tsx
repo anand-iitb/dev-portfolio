@@ -34,26 +34,26 @@ export function Navbar() {
             <MetalName>{portfolio.person.name}</MetalName>
           </a>
 
-          <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
             {portfolio.nav.map((item) => (
-              <a key={item.href} href={item.href} className="label link-line">
+              <a
+                key={item.href}
+                href={item.href}
+                target={item.href.endsWith(".pdf") ? "_blank" : undefined}
+                rel={item.href.endsWith(".pdf") ? "noreferrer" : undefined}
+                className="label link-line text-text/90 hover:text-text transition-colors"
+              >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 md:gap-5">
             <IndiaTime className="hidden md:block" />
-            <a
-              href={portfolio.person.resume}
-              className="label link-line hidden text-text sm:inline-flex"
-            >
-              Resume
-            </a>
             <ThemeToggle />
             <button
               type="button"
-              className="label text-text lg:hidden"
+              className="label text-text lg:hidden px-2 py-1 border border-border/80 rounded-sm bg-bg-elevated cursor-pointer"
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => setOpen((v) => !v)}
@@ -61,6 +61,7 @@ export function Navbar() {
               {open ? "Close" : "Menu"}
             </button>
           </div>
+
         </div>
       </header>
       <MobileMenu open={open} onClose={() => setOpen(false)} />

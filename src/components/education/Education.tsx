@@ -9,8 +9,9 @@ export function Education() {
       className="mx-auto max-w-[1440px] px-[var(--page-pad)] py-24 md:py-32"
     >
       <ScrollReveal>
-        <p className="label mb-14">04 — Education</p>
+        <p className="label mb-14">Education</p>
       </ScrollReveal>
+
       <div className="border-t border-border">
         {portfolio.education.map((edu) => (
           <ScrollReveal key={edu.id}>
