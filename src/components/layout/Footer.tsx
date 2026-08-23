@@ -12,17 +12,17 @@ export function Footer() {
   const { person, social } = portfolio;
 
   return (
-    <footer className="border-t border-border py-14">
+    <footer className="border-t border-border py-12 md:py-16">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center gap-6 px-[var(--page-pad)] text-center">
-        {/* Symmetrical Row: 2 icons on left, Visitors count in center, 2 icons on right */}
-        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8">
-          {/* Left: Email & LinkedIn */}
-          <div className="flex items-center gap-3">
+        {/* Social Icons & Visitor Counter Layout */}
+        <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-6 md:gap-8">
+          {/* Social Icons row */}
+          <div className="flex items-center justify-center gap-3">
             <a
               href={`mailto:${person.email}`}
               aria-label="Email"
               title="Email"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
             >
               <Mail size={16} />
             </a>
@@ -32,28 +32,19 @@ export function Footer() {
               rel="noreferrer"
               aria-label="LinkedIn"
               title="LinkedIn"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
                 <path d={LINKEDIN_PATH} />
               </svg>
             </a>
-          </div>
-
-          {/* Center: Visitors Count */}
-          <div className="px-2">
-            <VisitCounter />
-          </div>
-
-          {/* Right: GitHub & Instagram */}
-          <div className="flex items-center gap-3">
             <a
               href={social.github.href}
               target="_blank"
               rel="noreferrer"
               aria-label="GitHub"
               title="GitHub"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
                 <path d={siGithub.path} />
@@ -65,22 +56,28 @@ export function Footer() {
               rel="noreferrer"
               aria-label="Instagram"
               title="Instagram"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
+              className="flex h-10 w-10 md:h-11 md:w-11 items-center justify-center rounded-full border border-border bg-bg-elevated text-text transition-all duration-300 hover:border-accent hover:text-accent hover:scale-110"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
                 <path d={siInstagram.path} />
               </svg>
             </a>
           </div>
+
+          {/* Visitor Counter */}
+          <div className="flex items-center justify-center">
+            <VisitCounter />
+          </div>
         </div>
 
         {/* Bottom: Made with Love */}
-        <p className="label inline-flex items-center gap-2 text-text/80 pt-2">
+        <p className="label inline-flex items-center gap-2 text-text/80 pt-1">
           Made with
-          <Heart size={12} className="fill-accent text-accent" />
+          <Heart size={12} className="fill-accent text-accent animate-pulse" />
           by Anand
         </p>
       </div>
     </footer>
   );
 }
+

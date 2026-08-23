@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ui/theme-context";
 import { FilmProgress } from "@/components/ui/FilmProgress";
 import { Preloader } from "@/components/animations/Preloader";
 
+
 const KEY = "ak-intro";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -45,5 +46,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         </SmoothScroll>
       </LayoutGroup>
     </ThemeProvider>
+
   );
 }

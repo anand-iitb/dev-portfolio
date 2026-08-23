@@ -20,11 +20,13 @@ export function VisitCounter() {
     };
   }, []);
 
-  if (count === null) return null;
-
   return (
-    <p className="label tabular-nums text-text">
-      Visits {String(count).padStart(5, "0")}
-    </p>
+    <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-bg-elevated/70 px-3.5 py-1.5 backdrop-blur-xs">
+      <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+      <span className="label tabular-nums text-text/90">
+        Visits {count !== null ? String(count).padStart(5, "0") : "•••••"}
+      </span>
+    </div>
   );
 }
+

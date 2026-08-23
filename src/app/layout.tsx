@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Syne } from "next/font/google";
+import { Geist, Geist_Mono, Syne, Outfit } from "next/font/google";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { portfolio } from "@/data/portfolio";
 import "./globals.css";
@@ -19,6 +19,15 @@ const syne = Syne({
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
 });
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
+const fontVariables = `${geistSans.variable} ${geistMono.variable} ${syne.variable} ${outfit.variable}`;
+
+
 
 const title = `${portfolio.person.name} — ${portfolio.person.role}`;
 const description = portfolio.person.statement;
@@ -63,7 +72,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       suppressHydrationWarning
       data-theme="dark"
-      className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} h-full antialiased`}
+      className={`${fontVariables} h-full antialiased`}
     >
       <head>
         <script
