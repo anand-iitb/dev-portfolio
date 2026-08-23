@@ -23,7 +23,8 @@ export function ScrollReveal({
     if (!el || reduced) return;
 
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
+
+    const animateIn = () => {
       gsap.fromTo(
         el,
         { x: -64, opacity: 0 },
@@ -33,21 +34,24 @@ export function ScrollReveal({
           duration: 0.85,
           delay,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 92%",
-            // onEnter: play (slides in from left)
-            // onLeave: none (NEVER disappears while inside pinned sections!)
-            // onEnterBack: play (re-animates in from left when scrolling back up)
-            // onLeaveBack: reverse (resets when scrolled above)
-            toggleActions: "play none play reverse",
-          },
+          overwrite: "auto",
         },
       );
-    }, el);
+    };
 
-    return () => ctx.revert();
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top 90%",
+      end: "bottom 10%",
+      onEnter: animateIn,
+      onEnterBack: animateIn,
+    });
+
+    return () => {
+      st.kill();
+    };
   }, [delay, reduced]);
+
 
 
 
