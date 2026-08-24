@@ -1,13 +1,17 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function MetalName({
   children,
   className = "",
+  autoAnimate = true,
+  autoWaveDelay = 600,
 }: {
   children: string;
   className?: string;
+  autoAnimate?: boolean;
+  autoWaveDelay?: number;
 }) {
   const [activeIndices, setActiveIndices] = useState<Set<number>>(new Set());
   const containerRef = useRef<HTMLSpanElement>(null);
@@ -41,9 +45,22 @@ export function MetalName({
     chars.forEach((_, i) => {
       setTimeout(() => {
         triggerChar(i);
-      }, i * 50);
+      }, i * 65);
     });
   }, [children, triggerChar]);
+
+  useEffect(() => {
+    if (!autoAnimate) return;
+    const timer = setTimeout(() => {
+      triggerWave();
+    }, autoWaveDelay);
+
+    return () => {
+      clearTimeout(timer);
+      timeoutRefs.current.forEach((t) => clearTimeout(t));
+      timeoutRefs.current.clear();
+    };
+  }, [autoAnimate, autoWaveDelay, triggerWave]);
 
   const handleTouchMove = (e: React.TouchEvent<HTMLSpanElement>) => {
     const touch = e.touches[0];
@@ -90,4 +107,5 @@ export function MetalName({
     </span>
   );
 }
+
 

@@ -14,10 +14,10 @@ export function Footer() {
   return (
     <footer className="border-t border-border py-12 md:py-16">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center gap-6 px-[var(--page-pad)] text-center">
-        {/* Social Icons & Visitor Counter Layout */}
-        <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-6 md:gap-8">
-          {/* Social Icons row */}
-          <div className="flex items-center justify-center gap-3">
+        {/* Social Icons (2 Left) - Visitor Counter (Middle) - Social Icons (2 Right) */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5">
+          {/* Left 2 Icons: Mail & LinkedIn */}
+          <div className="flex items-center gap-3">
             <a
               href={`mailto:${person.email}`}
               aria-label="Email"
@@ -38,6 +38,15 @@ export function Footer() {
                 <path d={LINKEDIN_PATH} />
               </svg>
             </a>
+          </div>
+
+          {/* Center: Visitor Counter */}
+          <div className="flex items-center justify-center">
+            <VisitCounter />
+          </div>
+
+          {/* Right 2 Icons: GitHub & Instagram */}
+          <div className="flex items-center gap-3">
             <a
               href={social.github.href}
               target="_blank"
@@ -63,19 +72,19 @@ export function Footer() {
               </svg>
             </a>
           </div>
-
-          {/* Visitor Counter */}
-          <div className="flex items-center justify-center">
-            <VisitCounter />
-          </div>
         </div>
 
-        {/* Bottom: Made with Love */}
-        <p className="label inline-flex items-center gap-2 text-text/80 pt-1">
-          Made with
-          <Heart size={12} className="fill-accent text-accent animate-pulse" />
-          by Anand
-        </p>
+        {/* Bottom: Made with Love with GitHub Repository Link */}
+        <a
+          href="https://github.com/anand-iitb/dev-portfolio"
+          target="_blank"
+          rel="noreferrer"
+          className="label inline-flex items-center gap-2 text-text/80 pt-1 transition-colors duration-300 hover:text-accent group"
+        >
+          <span>Made with</span>
+          <Heart size={12} className="fill-accent text-accent animate-pulse group-hover:scale-125 transition-transform" />
+          <span>by Anand</span>
+        </a>
       </div>
     </footer>
   );

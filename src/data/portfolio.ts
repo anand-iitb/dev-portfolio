@@ -37,7 +37,7 @@ export const portfolio = {
   },
   nav: [
     { label: "About", href: "#about" },
-    { label: "Experience", href: "#experience" },
+    { label: "Experiences", href: "#experience" },
     { label: "Projects", href: "#work" },
     { label: "Achievements", href: "#recognition" },
     { label: "Resume", href: "/resume.pdf" },
